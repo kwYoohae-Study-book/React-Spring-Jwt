@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,6 +37,17 @@ public class TodoController {
       final ResponseDTO<TodoDTO> response = new ResponseDTO<>(e.getMessage(), null);
       return ResponseEntity.badRequest().body(response);
     }
+  }
+
+  @GetMapping
+  public ResponseEntity<?> retrieveTodoList() {
+    String temporaryUserId = "temporary-user";
+
+    final List<TodoEntity> entities = todoService.retrieve(temporaryUserId);
+    final List<TodoDTO> dtos = entities.stream().map(TodoDTO::new).collect(Collectors.toList());
+    final ResponseDTO<TodoDTO> response = new ResponseDTO<>(null, dtos);
+
+    return ResponseEntity.ok().body(response);
   }
 
 }
