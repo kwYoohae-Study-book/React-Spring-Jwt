@@ -4,6 +4,7 @@ import com.example.backend.model.TodoEntity;
 import com.example.backend.persistence.TodoRepository;
 import com.example.backend.utils.ErrorMessage;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,20 @@ public class TodoService {
 
   public List<TodoEntity> retrieve(final String userId) {
     return todoRepository.findByUserId(userId);
+  }
+
+  public List<TodoEntity> update(final TodoEntity entity) {
+    validate(entity);
+
+    final Optional<TodoEntity> original = todoRepository.findById(entity.getId());
+
+    original.ifPresent(todo -> {
+      final TodoEntity newEntity = new TodoEntity(todo.getId(), todo.getUserId(), entity.getTitle(),
+          entity.isDone());
+      todoRepository.save(newEntity);
+    });
+
+    return retrieve(entity.getUserId());
   }
 
   private static void validate(final TodoEntity entity) {

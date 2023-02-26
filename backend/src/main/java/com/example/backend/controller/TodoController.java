@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,6 +27,7 @@ public class TodoController {
     try {
       TodoEntity entity = TodoDTO.toEntity(dto);
       entity.makeTemporalUser();
+      entity.clearId();
 
       final List<TodoEntity> entities = todoService.create(entity);
       final List<TodoDTO> dtos = entities.stream().map(TodoDTO::new)
@@ -44,6 +46,18 @@ public class TodoController {
     String temporaryUserId = "temporary-user";
 
     final List<TodoEntity> entities = todoService.retrieve(temporaryUserId);
+    final List<TodoDTO> dtos = entities.stream().map(TodoDTO::new).collect(Collectors.toList());
+    final ResponseDTO<TodoDTO> response = new ResponseDTO<>(null, dtos);
+
+    return ResponseEntity.ok().body(response);
+  }
+
+  @PutMapping
+  public ResponseEntity<?> updateTodo(@RequestBody TodoDTO dto) {
+    final TodoEntity entity = TodoDTO.toEntity(dto);
+    entity.makeTemporalUser();
+
+    final List<TodoEntity> entities = todoService.update(entity);
     final List<TodoDTO> dtos = entities.stream().map(TodoDTO::new).collect(Collectors.toList());
     final ResponseDTO<TodoDTO> response = new ResponseDTO<>(null, dtos);
 

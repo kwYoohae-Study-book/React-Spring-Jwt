@@ -25,7 +25,10 @@ public class TodoEntity {
   private boolean done;
 
   public void makeTemporalUser() {
-    this.id = null;
     this.userId = "temporary-user";
+  }
+
+  public void clearId() {
+    this.id = null;
   }
 }
