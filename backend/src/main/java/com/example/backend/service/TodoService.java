@@ -16,6 +16,15 @@ public class TodoService {
   private final TodoRepository todoRepository;
 
   public List<TodoEntity> create(final TodoEntity entity) {
+    validate(entity);
+
+    todoRepository.save(entity);
+    log.info("Entity Id : {} 가 저장되었습니다", entity.getId());
+
+    return todoRepository.findByUserId(entity.getUserId());
+  }
+
+  private static void validate(final TodoEntity entity) {
     if (entity == null) {
       log.warn(ErrorMessage.ENTITY_IS_NOT_NULL);
       throw new RuntimeException(ErrorMessage.ENTITY_IS_NOT_NULL);
@@ -25,12 +34,6 @@ public class TodoService {
       log.warn(ErrorMessage.UNKNOWN_USER);
       throw new RuntimeException(ErrorMessage.UNKNOWN_USER);
     }
-
-    todoRepository.save(entity);
-    log.info("Entity Id : {} 가 저장되었습니다", entity.getId());
-
-    return todoRepository.findByUserId(entity.getUserId());
-
   }
 
 }
