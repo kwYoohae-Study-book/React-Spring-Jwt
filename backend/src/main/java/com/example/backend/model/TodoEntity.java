@@ -23,4 +23,9 @@ public class TodoEntity {
   private String userId;
   private String title;
   private boolean done;
+
+  public void makeTemporalUser() {
+    this.id = null;
+    this.userId = "temporary-user";
+  }
 }
