@@ -26,3 +26,13 @@ export function call(api, method, request) {
         console.log(error);
     });
 }
+
+export function signin(userDTO) {
+    return call("/auth/signin", "POST", userDTO)
+        .then((response) => {
+            console.log("response : ", response);
+            if (response.token) {
+                window.location.href = "/";
+            }
+        });
+}

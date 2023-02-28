@@ -31,8 +31,7 @@ public class UserService {
 
   public UserEntity getByCredentials(final String username, final String password
   , final PasswordEncoder encoder) {
-    final UserEntity originalUser = userRepository.findByUsernameAndPassword(username,
-        password);
+    final UserEntity originalUser = userRepository.findByUsername(username);
 
     // 패스워드가 같은지 확인
     if (originalUser != null &&
