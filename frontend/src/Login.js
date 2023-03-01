@@ -1,6 +1,7 @@
 import React from "react";
 import {signin} from "./service/ApiService";
 import {Button, Container, Grid, TextField, Typography} from "@mui/material";
+import {Link} from "react-router-dom";
 
 const Login = () => {
     const handleSubmit = (e) => {
@@ -39,6 +40,11 @@ const Login = () => {
                         <Button type="submit" fullWidth variant="contained" color="primary">
                             로그인
                         </Button>
+                    </Grid>
+                    <Grid item>
+                        <Link to="/signup" variant="body2">
+                            계정이 없습니까? 여기서 가입하세요.
+                        </Link>
                     </Grid>
                 </Grid>
             </form>
